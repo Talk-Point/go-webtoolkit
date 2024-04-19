@@ -103,6 +103,50 @@ func (m *TaskManager) QueueRemove(queue string) error {
 	return nil
 }
 
+func (m *TaskManager) PauseQueue(queue string) error {
+	ctx := context.Background()
+	client, err := cloudtasks.NewClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	queuePath := fmt.Sprintf("projects/%s/locations/%s/queues/%s", m.Project, m.Location, queue)
+	_, err = client.PauseQueue(ctx, &taskspb.PauseQueueRequest{
+		Name: queuePath,
+	})
+	if err != nil {
+		return err
+	}
+
+	log.WithFields(log.Fields{
+		"queue": queue,
+	}).Info("TaskManager Queue paused")
+	defer client.Close()
+	return nil
+}
+
+func (m *TaskManager) ResumeQueue(queue string) error {
+	ctx := context.Background()
+	client, err := cloudtasks.NewClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	queuePath := fmt.Sprintf("projects/%s/locations/%s/queues/%s", m.Project, m.Location, queue)
+	_, err = client.ResumeQueue(ctx, &taskspb.ResumeQueueRequest{
+		Name: queuePath,
+	})
+	if err != nil {
+		return err
+	}
+
+	log.WithFields(log.Fields{
+		"queue": queue,
+	}).Info("TaskManager Queue resumed")
+	defer client.Close()
+	return nil
+}
+
 func (m *TaskManager) QueueCreate(queue string) error {
 	ctx := context.Background()
 	client, err := cloudtasks.NewClient(ctx)
