@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 	"strings"
 	"time"
@@ -131,6 +132,10 @@ func (r *repository[T, TT]) Get(ctx context.Context, opts *query.QueryOptions) (
 }
 
 func (r *repository[T, TT]) GetByID(ctx context.Context, id string) (*T, error) {
+	if id == "" {
+		return nil, fmt.Errorf("id is required")
+	}
+
 	doc, err := r.Db.Collection(r.Collection).Doc(id).Get(ctx)
 	if err != nil {
 		return nil, err
@@ -211,6 +216,10 @@ func (r *repository[T, TT]) CreateEasy(ctx context.Context, obj T) (*string, err
 }
 
 func (r *repository[T, TT]) Update(ctx context.Context, id string, data map[string]interface{}) error {
+	if id == "" {
+		return fmt.Errorf("id is required")
+	}
+
 	updates := []firestore.Update{}
 	for k, v := range data {
 		updates = append(updates, firestore.Update{
@@ -226,6 +235,10 @@ func (r *repository[T, TT]) Update(ctx context.Context, id string, data map[stri
 }
 
 func (r *repository[T, TT]) Delete(ctx context.Context, id string) error {
+	if id == "" {
+		return fmt.Errorf("id is required")
+	}
+
 	_, err := r.Db.Collection(r.Collection).Doc(id).Delete(ctx)
 	if err != nil {
 		return err
