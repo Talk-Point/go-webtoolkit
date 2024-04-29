@@ -62,11 +62,19 @@ func (r *repository[T, TT]) Get(ctx context.Context, opts *query.QueryOptions) (
 	isFirstPage := true
 	if opts.Next != "" {
 		isFirstPage = false
-		q = q.StartAfter(opts.Next)
+		doc, err := r.Db.Collection(r.Collection).Doc(opts.Next).Get(ctx)
+		if err != nil {
+			return nil, err
+		}
+		q = q.StartAfter(doc)
 	}
 	if opts.Previous != "" {
 		isFirstPage = false
-		q = q.EndBefore(opts.Previous)
+		doc, err := r.Db.Collection(r.Collection).Doc(opts.Previous).Get(ctx)
+		if err != nil {
+			return nil, err
+		}
+		q = q.EndBefore(doc)
 	}
 
 	if opts.OrderBy != "" {
