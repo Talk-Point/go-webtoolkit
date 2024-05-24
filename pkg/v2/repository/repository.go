@@ -19,6 +19,7 @@ type Entity interface {
 }
 
 type Repository[T Entity, TT any] interface {
+	GetClient() *firestore.Client
 	Get(ctx context.Context, opts *query.QueryOptions) (*PaginationResult[T], error)
 	GetByID(ctx context.Context, id string) (*T, error)
 	Create(ctx context.Context, obj T) (*string, error)
@@ -41,6 +42,10 @@ func NewFirebaseRepository[T Entity, TT any](db *firestore.Client, ressoucre str
 		Collection: collectionName,
 		Ressource:  ressoucre,
 	}
+}
+
+func (r *repository[T, TT]) GetClient() *firestore.Client {
+	return r.Db
 }
 
 type PaginationResult[T any] struct {
