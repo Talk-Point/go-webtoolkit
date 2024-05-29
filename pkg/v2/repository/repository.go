@@ -24,6 +24,7 @@ type Repository[T Entity, TT any] interface {
 	GetByID(ctx context.Context, id string) (*T, error)
 	Create(ctx context.Context, obj T) (*string, error)
 	CreateEasy(ctx context.Context, obj T) (*string, error)
+	CreateQueryNotExists(ctx context.Context, obj T, funcQuery func(firestore.Query) firestore.Query) (*string, error)
 	Update(ctx context.Context, id string, data map[string]interface{}) error
 	Delete(ctx context.Context, id string) error
 }
@@ -161,6 +162,48 @@ func (r *repository[T, TT]) GetByID(ctx context.Context, id string) (*T, error) 
 	(*obj).SetDocId((*doc).Ref.ID)
 
 	return obj, nil
+}
+
+func (r *repository[T, TT]) CreateQueryNotExists(ctx context.Context, obj T, funcQuery func(firestore.Query) firestore.Query) (*string, error) {
+	var docID string
+	err := r.Db.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
+		query := r.Db.Collection(r.Collection).Query
+		query = funcQuery(query)
+		documents, err := query.Documents(ctx).GetAll()
+		if err != nil {
+			return err
+		}
+		if len(documents) > 0 {
+			return &errors.ErrorAlreadyExists{
+				ErrorDetail: errors.ErrorDetail{
+					Resource: r.Ressource,
+					Field:    "Reference",
+					Value:    "",
+					Message:  r.Ressource + " with Reference already exists",
+				},
+			}
+		}
+
+		val := reflect.ValueOf(obj).Elem()
+		if val.Kind() == reflect.Struct {
+			for _, fieldName := range []string{"CreatedAt", "UpdatedAt"} {
+				field := val.FieldByName(fieldName)
+				if field.IsValid() && field.CanSet() && field.Type() == reflect.TypeOf(time.Now()) {
+					field.Set(reflect.ValueOf(time.Now()))
+				}
+			}
+		}
+
+		docRef := r.Db.Collection(r.Collection).NewDoc()
+		tx.Set(docRef, obj)
+		docID = docRef.ID
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &docID, nil
 }
 
 func (r *repository[T, TT]) Create(ctx context.Context, obj T) (*string, error) {
