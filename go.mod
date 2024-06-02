@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/cloudtasks v1.12.8
 	cloud.google.com/go/firestore v1.15.0
 	github.com/Talk-Point/go-toolkit v1.2.0
-	github.com/go-playground/validator/v10 v10.20.0
+	github.com/go-playground/validator/v10 v10.21.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang/protobuf v1.5.4
 	github.com/sirupsen/logrus v1.9.3
@@ -15,7 +15,7 @@ require (
 
 require (
 	cloud.google.com/go v0.114.0 // indirect
-	cloud.google.com/go/auth v0.5.0 // indirect
+	cloud.google.com/go/auth v0.5.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.2 // indirect
 	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	cloud.google.com/go/iam v1.1.8 // indirect
