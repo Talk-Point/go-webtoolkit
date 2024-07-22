@@ -8,10 +8,14 @@ import (
 )
 
 func NewJwtToken(secret string, data map[string]interface{}) (string, error) {
+	return NewJwtTokenExtended(secret, data, 24*60*time.Minute)
+}
+
+func NewJwtTokenExtended(secret string, data map[string]interface{}, valid time.Duration) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	tokenExpirationDuration := 24 * 60 * time.Minute
+	tokenExpirationDuration := valid
 	for k, v := range data {
 		claims[k] = v
 	}
