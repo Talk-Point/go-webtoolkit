@@ -100,6 +100,18 @@ func NewClause(field string, operator Operator, value string) Clause {
 	}
 }
 
+type Direction int
+
+const (
+	Asc Direction = iota
+	Desc
+)
+
+type SortClause struct {
+	Field     string
+	Direction Direction
+}
+
 // ParseError represents a parsing error with context
 type ParseError struct {
 	Part  string
@@ -120,19 +132,54 @@ func NewAdvancedSearch(query string) *AdvancedSearch {
 	return &AdvancedSearch{query: query}
 }
 
+func parseSortClause(sort string) *SortClause {
+	if strings.HasSuffix(sort, "__asc") {
+		return &SortClause{
+			Field:     sort[:len(sort)-5],
+			Direction: Asc,
+		}
+	}
+	if strings.HasSuffix(sort, "__desc") {
+		return &SortClause{
+			Field:     sort[:len(sort)-6],
+			Direction: Desc,
+		}
+	}
+
+	return &SortClause{
+		Field:     sort,
+		Direction: Asc,
+	}
+}
+
 // Parse parses the query string and returns a slice of Clause objects
-func (as *AdvancedSearch) Parse() ([]Clause, error) {
+func (as *AdvancedSearch) Parse() ([]Clause, []SortClause, error) {
 	queryParts := strings.Fields(as.query)
 	if len(queryParts) == 0 {
-		return nil, errors.New("empty query")
+		return nil, nil, errors.New("empty query")
 	}
 
 	clauses := make([]Clause, 0, len(queryParts))
+	sortClauses := make([]SortClause, 0)
 
 	for _, part := range queryParts {
+		if strings.HasPrefix(part, "sort:") {
+			sortParts := strings.SplitN(part, ":", 2)
+			if len(sortParts) != 2 {
+				return nil, nil, &ParseError{Part: part, Cause: "invalid sort format"}
+			}
+			for _, sort := range strings.Split(sortParts[1], ",") {
+				sortClause := parseSortClause(sort)
+				if sortClause != nil {
+					sortClauses = append(sortClauses, *sortClause)
+				}
+			}
+			continue
+		}
+
 		clauseParts := strings.SplitN(part, ":", 3)
 		if len(clauseParts) < 2 {
-			return nil, &ParseError{Part: part, Cause: "invalid query format"}
+			return nil, nil, &ParseError{Part: part, Cause: "invalid query format"}
 		}
 
 		field := clauseParts[0]
@@ -140,13 +187,13 @@ func (as *AdvancedSearch) Parse() ([]Clause, error) {
 
 		operator, ok := operatorMap[strings.ToLower(operatorKey)]
 		if !ok {
-			return nil, &ParseError{Part: part, Cause: "unsupported operator"}
+			return nil, nil, &ParseError{Part: part, Cause: "unsupported operator"}
 		}
 
 		var value string
 		if operator != Null && operator != NotNull {
 			if len(clauseParts) != 3 {
-				return nil, &ParseError{Part: part, Cause: "missing value"}
+				return nil, nil, &ParseError{Part: part, Cause: "missing value"}
 			}
 			value = clauseParts[2]
 			if len(value) >= 2 && value[0] == '\'' && value[len(value)-1] == '\'' {
@@ -158,7 +205,7 @@ func (as *AdvancedSearch) Parse() ([]Clause, error) {
 		clauses = append(clauses, clause)
 	}
 
-	return clauses, nil
+	return clauses, sortClauses, nil
 }
 
 // RegisterOperator allows registering a new operator

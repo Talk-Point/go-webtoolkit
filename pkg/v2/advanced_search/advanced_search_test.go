@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestParse(t *testing.T) {
+func TestParseWhereClause(t *testing.T) {
 	tests := []struct {
 		name    string
 		query   string
@@ -82,7 +82,59 @@ func TestParse(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			as := NewAdvancedSearch(tt.query)
-			got, err := as.Parse()
+			got, _, err := as.Parse()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Parse() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestParseSortClause(t *testing.T) {
+	tests := []struct {
+		name    string
+		query   string
+		want    []SortClause
+		wantErr bool
+	}{
+		{
+			name:  "single clause with equal operator",
+			query: "sort:field1__desc,field2__asc,field3",
+			want: []SortClause{
+				{Field: "field1", Direction: Desc},
+				{Field: "field2", Direction: Asc},
+				{Field: "field3", Direction: Asc},
+			},
+			wantErr: false,
+		},
+		{
+			name:  "single clause with equal operator",
+			query: "sort:field3",
+			want: []SortClause{
+				{Field: "field3", Direction: Asc},
+			},
+			wantErr: false,
+		},
+		{
+			name:  "single clause with equal operator",
+			query: "sort:field3,field__2,field__1__desc",
+			want: []SortClause{
+				{Field: "field3", Direction: Asc},
+				{Field: "field__2", Direction: Asc},
+				{Field: "field__1", Direction: Desc},
+			},
+			wantErr: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			as := NewAdvancedSearch(tt.query)
+			_, got, err := as.Parse()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
 				return

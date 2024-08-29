@@ -18,15 +18,14 @@ func NewAdvancedSqlSearch(query string, columns ...string) *AdvancedSqlSearch {
 }
 
 func (as *AdvancedSqlSearch) Sql() (string, error) {
-	clauses, err := as.base.Parse()
+	whereClasues, _, err := as.base.Parse()
 	if err != nil {
 		return "", err
 	}
 
-	sqlParts := make([]string, 0, len(clauses))
-	for _, clause := range clauses {
+	sqlParts := make([]string, 0, len(whereClasues))
+	for _, clause := range whereClasues {
 		if len(as.columns) > 0 {
-			// Check if the clause field is in the allowed columns
 			if !contains(as.columns, clause.Field) {
 				return "", fmt.Errorf("field %s is not allowed", clause.Field)
 			}
