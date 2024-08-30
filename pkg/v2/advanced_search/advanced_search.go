@@ -73,25 +73,29 @@ func escapeString(value string) string {
 	return strings.ReplaceAll(value, "'", "''")
 }
 
-func (c Clause) Sql() string {
+func (c Clause) Sql(name string) string {
+	field := c.Field
+	if name != "" {
+		field = name
+	}
+
 	switch c.Operator {
 	case Null, NotNull:
-		return fmt.Sprintf("%s %s", c.Field, c.Operator)
+		return fmt.Sprintf("%s %s", field, c.Operator)
 	case Like:
-		return fmt.Sprintf("%s %s '%%%s%%'", c.Field, c.Operator, c.Value)
+		return fmt.Sprintf("%s %s '%%%s%%'", field, c.Operator, c.Value)
 	default:
 		// Check if the value is an integer or float
 		if _, err := strconv.Atoi(c.Value); err == nil {
-			return fmt.Sprintf("%s %s %s", c.Field, c.Operator, c.Value)
+			return fmt.Sprintf("%s %s %s", field, c.Operator, c.Value)
 		}
 		if _, err := strconv.ParseFloat(c.Value, 64); err == nil {
-			return fmt.Sprintf("%s %s %s", c.Field, c.Operator, c.Value)
+			return fmt.Sprintf("%s %s %s", field, c.Operator, c.Value)
 		}
-		return fmt.Sprintf("%s %s '%s'", c.Field, c.Operator, escapeString(c.Value))
+		return fmt.Sprintf("%s %s '%s'", field, c.Operator, escapeString(c.Value))
 	}
 }
 
-// NewClause creates a new Clause instance
 func NewClause(field string, operator Operator, value string) Clause {
 	return Clause{
 		Field:    field,
@@ -206,9 +210,4 @@ func (as *AdvancedSearch) Parse() ([]Clause, []SortClause, error) {
 	}
 
 	return clauses, sortClauses, nil
-}
-
-// RegisterOperator allows registering a new operator
-func RegisterOperator(symbol string, op Operator) {
-	operatorMap[symbol] = op
 }
