@@ -1,7 +1,6 @@
 package advanced_search
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -160,7 +159,7 @@ func parseSortClause(sort string) *SortClause {
 func (as *AdvancedSearch) Parse() ([]Clause, []SortClause, error) {
 	queryParts := strings.Fields(as.query)
 	if len(queryParts) == 0 {
-		return nil, nil, errors.New("empty query")
+		return nil, nil, nil
 	}
 
 	clauses := make([]Clause, 0, len(queryParts))
