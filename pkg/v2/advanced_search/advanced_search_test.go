@@ -38,12 +38,6 @@ func TestParseWhereClause(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:    "empty query",
-			query:   "",
-			want:    nil,
-			wantErr: true,
-		},
-		{
 			name:    "invalid format missing parts",
 			query:   "field1:value1",
 			want:    nil,
@@ -75,6 +69,12 @@ func TestParseWhereClause(t *testing.T) {
 			want: []Clause{
 				{Field: "field1", Operator: Equal, Value: "value1"},
 			},
+			wantErr: false,
+		},
+		{
+			name:    "empty check",
+			query:   "",
+			want:    nil,
 			wantErr: false,
 		},
 	}

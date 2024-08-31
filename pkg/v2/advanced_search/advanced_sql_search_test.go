@@ -69,6 +69,14 @@ func TestNewAdvancedSqlSearch(t *testing.T) {
 			wantSort:  "",
 			wantErr:   true,
 		},
+		{
+			name:      "empty check",
+			query:     "",
+			columns:   []Column{{Name: "field1", Type: IntType, Aliases: []string{"f1"}}},
+			wantWhere: "",
+			wantSort:  "",
+			wantErr:   false,
+		},
 	}
 
 	for _, tt := range tests {
