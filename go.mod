@@ -3,7 +3,7 @@ module github.com/Talk-Point/go-webtoolkit
 go 1.22.2
 
 require (
-	cloud.google.com/go/cloudtasks v1.13.0
+	cloud.google.com/go/cloudtasks v1.13.1
 	cloud.google.com/go/firestore v1.17.0
 	github.com/Talk-Point/go-toolkit v1.2.0
 	github.com/go-playground/validator/v10 v10.22.1
@@ -17,9 +17,9 @@ require (
 	cloud.google.com/go v0.115.1 // indirect
 	cloud.google.com/go/auth v0.9.4 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.4 // indirect
-	cloud.google.com/go/compute/metadata v0.5.0 // indirect
-	cloud.google.com/go/iam v1.2.0 // indirect
-	cloud.google.com/go/longrunning v0.6.0 // indirect
+	cloud.google.com/go/compute/metadata v0.5.1 // indirect
+	cloud.google.com/go/iam v1.2.1 // indirect
+	cloud.google.com/go/longrunning v0.6.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.5 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
