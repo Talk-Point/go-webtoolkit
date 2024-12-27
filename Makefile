@@ -17,8 +17,9 @@ update:
 	@if [ -n "$$(git status --porcelain)" ]; then \
 		git add .; \
 		git commit -m "chore: auto-update dependencies"; \
+		git push origin develop; \
 		echo "# Automated Dependency Update\n\n## Summary\n" > /tmp/pr_body.txt; \
-		git diff HEAD~1 | ollama run qwen2.5-coder:32b "Analyze this git diff and provide a concise summary of the dependency updates. Focus on major version changes and breaking changes if any. Format the response in markdown." >> /tmp/pr_body.txt; \
+		git diff HEAD~1 | ollama run qwen "Analyze this git diff and provide a concise summary of the dependency updates. Focus on major version changes and breaking changes if any. Format the response in markdown." >> /tmp/pr_body.txt; \
 		echo "\n## Detailed Changes\n\`\`\`" >> /tmp/pr_body.txt; \
 		git diff HEAD~1 go.mod >> /tmp/pr_body.txt; \
 		echo "\`\`\`" >> /tmp/pr_body.txt; \
