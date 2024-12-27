@@ -10,10 +10,10 @@ import (
 
 	cloudtasks "cloud.google.com/go/cloudtasks/apiv2"
 	taskspb "cloud.google.com/go/cloudtasks/apiv2/cloudtaskspb"
-	"github.com/golang/protobuf/ptypes/timestamp"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type QueueOptions struct {
@@ -155,9 +155,9 @@ func (tm *TaskManager) Run(queue, path string, options ...TaskOption) error {
 
 	endpoint := baseUrl.ResolveReference(taskPath).String()
 
-	var t *timestamp.Timestamp
+	var t *timestamppb.Timestamp
 	if task.Delay > 0 {
-		t = &timestamp.Timestamp{
+		t = &timestamppb.Timestamp{
 			Seconds: time.Now().UTC().Add(task.Delay).Unix(),
 			Nanos:   0,
 		}
