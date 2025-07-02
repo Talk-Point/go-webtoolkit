@@ -1,6 +1,14 @@
 # Go-WebToolkit
 
+<div align="center">
+
+![Go Version](https://img.shields.io/badge/Go-1.24+-00ADD8?style=for-the-badge&logo=go)
+[![License](https://img.shields.io/github/license/Talk-Point/go-webtoolkit?style=for-the-badge)](LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Talk-Point/go-webtoolkit?style=for-the-badge)](https://goreportcard.com/report/github.com/Talk-Point/go-webtoolkit)
+
 Ein umfassendes und vielseitiges Go-Utility-Toolkit, speziell entwickelt für die Entwicklung robuster Web-APIs bei Talk-Point. Diese Bibliothek bietet eine Sammlung von bewährten Komponenten und Utilities, die die Go-Entwicklung beschleunigen und standardisieren.
+
+</div>
 
 ## 🚀 Installation
 
