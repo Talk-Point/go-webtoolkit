@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/cloudtasks v1.13.6
 	cloud.google.com/go/firestore v1.18.0
 	github.com/Talk-Point/go-toolkit v1.4.0
-	github.com/go-playground/validator/v10 v10.26.0
+	github.com/go-playground/validator/v10 v10.27.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/sirupsen/logrus v1.9.3
 	google.golang.org/grpc v1.73.0
