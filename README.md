@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Go Version](https://img.shields.io/badge/Go-1.24+-00ADD8?style=for-the-badge&logo=go)
+![Go Version](https://img.shields.io/badge/Go-1.25+-00ADD8?style=for-the-badge&logo=go)
 [![License](https://img.shields.io/github/license/Talk-Point/go-webtoolkit?style=for-the-badge)](LICENSE)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Talk-Point/go-webtoolkit?style=for-the-badge)](https://goreportcard.com/report/github.com/Talk-Point/go-webtoolkit)
 
@@ -145,7 +145,7 @@ func main() {
 // go.mod
 module your-project
 
-go 1.24
+go 1.25
 
 require github.com/Talk-Point/go-webtoolkit v1.x.x
 ```
@@ -209,7 +209,7 @@ func TestExample(t *testing.T) {
 
 ## 📋 Anforderungen
 
-- **Go Version**: 1.24+ (für Generics-Support)
+- **Go Version**: 1.25+ (für Generics-Support)
 - **Google Cloud**: Firestore und Cloud Tasks (für entsprechende Module)
 - **Dependencies**: Automatisch über `go mod` verwaltet
 
