@@ -12,8 +12,8 @@ cloud.google.com/go/firestore v1.22.0 h1:avooeboIq37vKXobrbPUFhFBxS/c3FqmWoX0xs8
 cloud.google.com/go/firestore v1.22.0/go.mod h1:PaM4i7i7ruALSKmlpHXXZaPObcZw0W7ie5UOPr72iTU=
 cloud.google.com/go/iam v1.11.0 h1:KieQ9Pb+LLPak1O3Rv3GgCxhnmkYf7Xyh0P5HfF1jFM=
 cloud.google.com/go/iam v1.11.0/go.mod h1:KP+nKGugNJW4LcLx1uEZcq1ok5sQHFaQehQNl4QDgV4=
-cloud.google.com/go/longrunning v1.0.0 h1:lwzWEYD8+NkYV7dhexOz6kmlvajZA70+bW/xMhRVVdY=
-cloud.google.com/go/longrunning v1.0.0/go.mod h1:8nqFBPOO1U/XkhWl0I19AMZEphrHi73VNABIpKYaTwM=
+cloud.google.com/go/longrunning v1.1.0 h1:qJ0R0IA8ONaRCNWTRPAS0iAmt1bj3TVgJ40z7ZGRslE=
+cloud.google.com/go/longrunning v1.1.0/go.mod h1:tH+A/6UvNypiPJWAQaKCsh+xiGbB23wUO8egwUXlD2E=
 github.com/Talk-Point/go-toolkit v1.9.0 h1:rZYWLvo3jOtjK4hOEwKkg9TXOrJzbV5rMLFrhd0C0aI=
 github.com/Talk-Point/go-toolkit v1.9.0/go.mod h1:DNT/PPx+bgTO7T8MM1ZTrRHRQ071ynH3WASAZcNnNOs=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
