@@ -9,7 +9,7 @@ require (
 	github.com/go-playground/validator/v10 v10.30.3
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/sirupsen/logrus v1.9.4
-	google.golang.org/grpc v1.81.1
+	google.golang.org/grpc v1.82.0
 	google.golang.org/protobuf v1.36.11
 )
 
@@ -44,8 +44,8 @@ require (
 	golang.org/x/sys v0.46.0 // indirect
 	golang.org/x/text v0.38.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	google.golang.org/api v0.286.0 // indirect
-	google.golang.org/genproto v0.0.0-20260622175928-b703f567277d // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260622175928-b703f567277d // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260622175928-b703f567277d // indirect
+	google.golang.org/api v0.287.0 // indirect
+	google.golang.org/genproto v0.0.0-20260630182238-925bb5da69e7 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260630182238-925bb5da69e7 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260630182238-925bb5da69e7 // indirect
 )
