@@ -242,6 +242,45 @@ func TestClause_Sql(t *testing.T) {
 			},
 			want: "username = 'admin'' AND 0x50=0x50 --'",
 		},
+		// Die Faelle oben decken ausschliesslich Equal ab; der Like-Zweig war
+		// nur mit "20% off!" belegt, einem Wert ohne Hochkomma. Genau darin
+		// konnte sich Talk-Point/IT#16648 verstecken.
+		{
+			name: "boolean-based injection over LIKE",
+			clause: Clause{
+				Field:    "username",
+				Operator: Like,
+				Value:    "a'OR'1'LIKE'1",
+			},
+			want: "username LIKE '%a''OR''1''LIKE''1%'",
+		},
+		{
+			name: "SQL comment injection over LIKE",
+			clause: Clause{
+				Field:    "username",
+				Operator: Like,
+				Value:    "admin' --",
+			},
+			want: "username LIKE '%admin'' --%'",
+		},
+		{
+			name: "union select injection over LIKE",
+			clause: Clause{
+				Field:    "username",
+				Operator: Like,
+				Value:    "x'/**/UNION/**/ALL/**/SELECT/**/1--",
+			},
+			want: "username LIKE '%x''/**/UNION/**/ALL/**/SELECT/**/1--%'",
+		},
+		{
+			name: "legitimate apostrophe over LIKE",
+			clause: Clause{
+				Field:    "name",
+				Operator: Like,
+				Value:    "O'Brien",
+			},
+			want: "name LIKE '%O''Brien%'",
+		},
 	}
 
 	for _, tt := range tests {
