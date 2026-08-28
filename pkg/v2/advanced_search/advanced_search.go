@@ -82,7 +82,12 @@ func (c Clause) Sql(name string) string {
 	case Null, NotNull:
 		return fmt.Sprintf("%s %s", field, c.Operator)
 	case Like:
-		return fmt.Sprintf("%s %s '%%%s%%'", field, c.Operator, c.Value)
+		// escapeString gehoert hier genauso hin wie in den default-Zweig: ohne
+		// den Aufruf beendet ein Hochkomma im Suchwert das String-Literal und
+		// der Rest der Eingabe wird zu SQL. "a'OR'1'LIKE'1" ergab
+		// "spalte LIKE '%a'OR'1'LIKE'1%'" -- OR bindet schwaecher als AND, die
+		// gesamte WHERE-Klausel wurde wahr. Siehe Talk-Point/IT#16648.
+		return fmt.Sprintf("%s %s '%%%s%%'", field, c.Operator, escapeString(c.Value))
 	default:
 		// Check if the value is an integer or float
 		if _, err := strconv.Atoi(c.Value); err == nil {
