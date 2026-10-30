@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	cloud.google.com/go/cloudtasks v1.21.1
-	cloud.google.com/go/firestore v1.29.1
+	cloud.google.com/go/firestore v1.29.2
 	github.com/Talk-Point/go-toolkit v1.10.0
 	github.com/go-playground/validator/v10 v10.30.5
 	github.com/golang-jwt/jwt/v5 v5.3.1
