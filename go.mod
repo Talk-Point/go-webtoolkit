@@ -1,6 +1,6 @@
 module github.com/Talk-Point/go-webtoolkit
 
-go 1.26.0
+go 1.27
 
 require (
 	cloud.google.com/go/cloudtasks v1.21.1
